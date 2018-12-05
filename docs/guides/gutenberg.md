@@ -102,8 +102,6 @@ In your Twig template, you then have complete freedom over your markup.
 {% endif %}
 ```
 
-With this technique you need to consider that your attributes need to be defined in PHP and not in JavaScript.
-
 ## ACF Blocks
 
 ACF Blocks are an alternative way to create content blocks without advanced JavaScript knowledge. If you want to learn more about them, read the article on [advancedcustomfields.com](https://www.advancedcustomfields.com/blog/acf-5-8-introducing-acf-blocks-for-gutenberg/).
