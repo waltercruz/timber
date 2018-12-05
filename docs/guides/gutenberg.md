@@ -218,7 +218,7 @@ You can either render the whole block, or only parts of a block. Let’s have a 
 
 ### A latests posts block
 
-Instead of rendering the list of posts in the edit mode through JavaScript, you can use the [ServerSideRenderer](https://wordpress.org/gutenberg/handbook/designers-developers/developers/components/server-side-render/) component to do that for you.
+Instead of rendering the list of posts in the edit mode through JavaScript, you can use the [ServerSideRender](https://wordpress.org/gutenberg/handbook/designers-developers/developers/components/server-side-render/) component to do that for you.
 
 ```js
 const { registerBlockType } = wp.blocks;
@@ -280,7 +280,7 @@ function my_plugin_render_block_latest_post( $attributes, $content = '' ) {
 }
 ```
 
-In this example, no attributes are used for brevity. But of course you extend the block with custom attributes. For example, if you wanted to automate the `posts_per_page` property in the query, you could add it as an [Attribute](https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-attributes/) in the block that you pass into the query.
+In this example, no attributes are used for brevity. But of course you could extend the block with custom attributes. For example, if you wanted to automate the `posts_per_page` property in the query, you could add it as an [Attribute](https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-attributes/) for the block that you pass into the query. Be aware that when you use `ServerSideRender` you need to define your attributes in PHP and not in JavaScript.
 
 **block/latest-posts.twig**
 
