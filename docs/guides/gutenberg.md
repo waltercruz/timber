@@ -280,8 +280,6 @@ function my_plugin_render_block_latest_post( $attributes, $content = '' ) {
 }
 ```
 
-In this example, no attributes are used for brevity. But of course you could extend the block with custom attributes. For example, if you wanted to automate the `posts_per_page` property in the query, you could add it as an [Attribute](https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-attributes/) for the block that you pass into the query. Be aware that when you use `ServerSideRender` you need to define your attributes in PHP and not in JavaScript.
-
 **block/latest-posts.twig**
 
 ```twig
@@ -298,4 +296,46 @@ In this example, no attributes are used for brevity. But of course you could ext
 </ul>
 
 <a href="{{ fn('home_url') }}">{{ __('All posts', 'my-plugin') }}</a>
+```
+
+In this example, no attributes are used for brevity. But of course you could extend the block with custom attributes. For example, if you wanted to automate the `posts_per_page` property in the query, you could add it as an [Attribute](https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-attributes/) for the block that you pass into the query.
+
+Be aware that when you use `ServerSideRender`, you need to **define your attributes in PHP** and not in JavaScript.
+
+### Access post ID of currently edited post
+
+When you use `ServerSideRender` like advised in the documentation, you normally have no access to the post ID of the currently edited post, because WordPress executes a REST API call with no knowledge of where it originated from.
+
+To solve this, instead of using `ServerSideRender` from `wp.components`, you can use [the one from `wp.editor`](https://github.com/WordPress/gutenberg/blob/master/packages/editor/src/components/server-side-render/README.md). 
+
+```js
+// Without post ID.
+const { ServerSideRender } = wp.components;
+
+// With post ID.
+const { ServerSideRender } = wp.editor;
+```
+
+Now, when you do define a render callback, you can access the post ID with `get_the_ID()`:
+
+```php
+/**
+ * Renders the block.
+ *
+ * @param array  $attributes The block props.
+ * @param string $content    The block content.
+ * @return string
+ */
+function render_callback( $attributes, $content = '' ) {
+    if ( ! empty( $attributes ) ) {
+        $post_id = get_the_ID();
+
+        return Timber::compile( 'block/team-member.twig', [
+            'attributes' => $attributes,
+            'post'       => new Timber\Post( $post_id ),
+        ] );
+    }
+
+    return 'Loading …';
+}
 ```
