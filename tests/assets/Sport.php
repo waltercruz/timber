@@ -1,9 +1,8 @@
 <?php
+ class Sport extends \Timber\Post {
 
-class Sport extends \Timber\Post {
-	
 	function channel() {
 		return 'ESPN';
 	}
 
-}
+ } 
