@@ -2,6 +2,13 @@
 
 	class TestTimberUser extends Timber_UnitTestCase {
 
+		function testIDDataType() {
+			$uid = $this->factory->user->create(array('display_name' => 'James Marshall'));
+			$user = new Timber\User($uid);
+			$this->assertEquals('integer', gettype($user->id));
+			$this->assertEquals('integer', gettype($user->ID));
+		}
+
 		function testInitWithID(){
 			$uid = $this->factory->user->create(array('display_name' => 'Baberaham Lincoln'));
 			$user = new TimberUser($uid);
@@ -14,6 +21,18 @@
 			$user = new TimberUser('mbottitta');
 			$this->assertEquals('Tito Bottitta', $user->name);
 			$this->assertEquals($uid, $user->id);
+		}
+
+		function testPostWithBlankUser() {
+			$post_id = wp_insert_post(
+			    [ 'post_title' => 'Baseball'
+			    , 'post_content' => 'is fine, I guess'
+			    , 'post_status' => 'publish'
+			    ]);
+			$post = new Timber\Post($post_id);
+			$template = '{{ post.title }} by {{ post.author }}';
+			$str = Timber::compile_string($template, array('post' => $post));
+			$this->assertEquals('Baseball by', trim($str));
 		}
 
 		function testUserCapability() {
